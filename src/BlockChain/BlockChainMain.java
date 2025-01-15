@@ -1,10 +1,13 @@
 package BlockChain;
 import java.util.ArrayList;
 import com.google.gson.*;
+import java.security.Security;
 
 public class BlockChainMain {
 	public static int difficulty = 5;
 	public static ArrayList<Block> blockchain = new ArrayList<Block>(); 
+	public static Wallet walletA;
+	public static Wallet walletB;
 	
 	public static Boolean isChainValid() {
 		for(int i=1; i < blockchain.size(); i++) {
@@ -26,6 +29,22 @@ public class BlockChainMain {
 	}
 	
 	public static void main(String[] args) {
+		//Setup Bouncey castle as a Security Provider
+		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); 
+		//Create the new wallets
+		walletA = new Wallet();
+		walletB = new Wallet();
+		//Test public and private keys
+		System.out.println("Private and public keys:");
+		System.out.println(StringHasher.getStringFromKey(walletA.privateKey));
+		System.out.println(StringHasher.getStringFromKey(walletA.publicKey));
+		//Create a test transaction from WalletA to walletB 
+		Transaction transaction = new Transaction(walletA.publicKey, walletB.publicKey, 5, null);
+		transaction.generateSignature(walletA.privateKey);
+		//Verify the signature works and verify it from the public key
+		System.out.println("Is signature verified");
+		System.out.println(transaction.verifiySignature());
+				
 		String previousHash = "0";
 		for (int i=0; i<4; i++) {
 			blockchain.add(new Block(String.format("Block %d... ", i), previousHash));
