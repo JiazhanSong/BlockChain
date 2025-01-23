@@ -1,5 +1,5 @@
 # BlockChain
-Blockchain implementation in Java with blocks, wallets, transactions, and cryptographic hashes.
+Blockchain implementation in Java with blocks, wallets, transactions, and cryptography.
 
 Sample output:
 ```
